@@ -8,8 +8,9 @@
 (menu-bar-mode -1)
 ;; highlight current line
 (global-hl-line-mode t)
-;; show line numbers
+;; show line/column numbers
 (global-display-line-numbers-mode)
+(setq column-number-mode t)
 
 ;; require and initialize `package`
 (add-to-list 'load-path "~/.emacs.d/pkgs/")
@@ -47,6 +48,7 @@
             (lambda ()
               (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
   ;; racer does code completion
+  ;;; M-. goes to definition, M-, goes back
   (use-package racer 
     :ensure t
     :hook (rust-mode . racer-mode)
@@ -67,7 +69,7 @@
       :ensure t
       :config
       (add-hook 'flycheck-mode-hook #'flycheck-inline-mode)))
-  ;; format rust buffers on save using rustfmt
+  ;; format rust buffers (using rustfmt) and run clippy on save
   (add-hook 'before-save-hook 
             (lambda ()
               (when (eq major-mode 'rust-mode)
