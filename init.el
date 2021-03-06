@@ -74,3 +74,40 @@
             (lambda ()
               (when (eq major-mode 'rust-mode)
                 (rust-format-buffer)))))
+
+;; Javascript Configuration
+(setq js-indent-level 2)
+(setq rjsx-indent-level 2)
+(use-package js2-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+  ;; Better imenu
+  (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+  (use-package js2-refactor
+    :ensure t
+    :config
+    (add-hook 'js2-mode-hook #'js2-refactor-mode)
+    ;; to use js2-refactor commands name "C-c C-c (command)"
+    (js2r-add-keybindings-with-prefix "C-c C-r")
+    (define-key js2-mode-map (kbd "C-k") #'js2r-kill))
+  ;; M-. jump to definition
+  ;; M-? jump to references
+  ;; M-, pop back to where M-. was last invokde
+  (use-package xref-js2
+    :ensure t
+    :config
+    ;; js-mode binds "M-." which conflicts with xref-js2 so we unbind it
+    (define-key js-mode-map (kbd "M-.") nil)
+    (add-hook 'js2-mode-hook (lambda ()
+                               (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))))
+  ;; code formatter (automatically runs on save)
+  ;; install with `npm install -g prettier'
+  (use-package prettier-js
+    :ensure t
+    :config
+    (add-hook 'js2-mode-hook #'prettier-js-mode)
+    ;; should I have this?
+    ;(add-hook 'web-mode-hook #'prettier-js-mode)
+    (setq prettier-js-args '("--single-quote" "true"))))
+          
