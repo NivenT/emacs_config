@@ -69,6 +69,9 @@
       :ensure t
       :config
       (add-hook 'flycheck-mode-hook #'flycheck-inline-mode)))
+  ;; Rusty Object Notation syntax support
+  (use-package ron-mode
+    :ensure t)
   ;; format rust buffers (using rustfmt) and run clippy on save
   (add-hook 'before-save-hook 
             (lambda ()
