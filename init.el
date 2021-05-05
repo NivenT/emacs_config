@@ -82,7 +82,7 @@
     (lsp-rust-analyzer-server-display-inlay-hints t)
     (lsp-rust-analyzer-inlay-hints-mode t)
     :config
-    (add-hook 'rust-mode 'lsp))
+    (add-hook 'rust-mode-hook 'lsp))
   ;; format Rust buffers (using rustfmt) and run clippy on save
   (add-hook 'before-save-hook 
             (lambda ()
