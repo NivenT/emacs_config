@@ -49,16 +49,16 @@
               (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
   ;; racer does code completion
   ;;; M-. goes to definition, M-, goes back
-  (use-package racer 
-    :ensure t
-    :hook (rust-mode . racer-mode)
-    :init
-    (use-package company :ensure t) ;; needed for racer
-    (setq racer-cmd "~/.cargo/bin/racer") ;; racer binary path
-    (setq racer-rust-src-path "/home/niven/code/rust/library")
-    :config
-    (add-hook 'racer-mode-hook #'eldoc-mode)
-    (add-hook 'racer-mode-hook #'company-mode))
+ ;; (use-package racer 
+ ;;   :ensure t
+ ;;   :hook (rust-mode . racer-mode)
+ ;;    :init
+ ;;    (use-package company :ensure t) ;; needed for racer
+ ;;    (setq racer-cmd "~/.cargo/bin/racer") ;; racer binary path
+ ;;    (setq racer-rust-src-path "~/code/rust/library")
+ ;;    :config
+ ;;    (add-hook 'racer-mode-hook #'eldoc-mode)
+ ;;    (add-hook 'racer-mode-hook #'company-mode))
   ;; compiles code on the fly and reports errors
   (use-package flycheck-rust 
     :ensure t
@@ -72,7 +72,18 @@
   ;; Rusty Object Notation syntax support
   (use-package ron-mode
     :ensure t)
-  ;; format rust buffers (using rustfmt) and run clippy on save
+  ;; rust language server for inline type annotations
+  (use-package lsp-mode
+    :ensure t
+    :custom
+    (lsp-rust-server 'rust-analyzer)
+    (lsp-rust-analyzer-cargo-watch-command "clippy")
+    (lsp-eldoc-render-all t)
+    (lsp-rust-analyzer-server-display-inlay-hints t)
+    (lsp-rust-analyzer-inlay-hints-mode t)
+    :config
+    (add-hook 'rust-mode 'lsp))
+  ;; format Rust buffers (using rustfmt) and run clippy on save
   (add-hook 'before-save-hook 
             (lambda ()
               (when (eq major-mode 'rust-mode)

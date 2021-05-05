@@ -75,7 +75,7 @@ static char *gnus-pointer[] = {
  '(org-src-block-faces (quote nil))
  '(package-selected-packages
    (quote
-    (ron-mode prettier-js js-format xref-js2 js2-refactor js2-mode flycheck-inline flycheck-rust company racer cargo alect-dark rustic rust-mode slime)))
+    (lsp-ui ron-mode prettier-js js-format xref-js2 js2-refactor js2-mode flycheck-inline flycheck-rust company racer cargo alect-dark rustic rust-mode slime)))
  '(pdf-view-midnight-colors (quote ("#ffffff" . "#110b11")))
  '(vc-annotate-background nil)
  '(vc-annotate-background-mode nil)
