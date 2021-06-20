@@ -1,7 +1,7 @@
 (setq custom-file "~/.emacs.d/custom-file.el")
 (load-file custom-file)
 
-(setq-default tab-width 4)
+(setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
 
 ;; disable menu bar
@@ -78,7 +78,9 @@
     :custom
     (lsp-rust-server 'rust-analyzer)
     (lsp-rust-analyzer-cargo-watch-command "clippy")
-    ;(lsp-eldoc-render-all t)
+    (lsp-eldoc-render-all nil)
+    ; don't be constantly updating as I'm typing
+    (lsp-idle-delay 0.6)
     (lsp-rust-analyzer-server-display-inlay-hints t)
     (lsp-rust-analyzer-inlay-hints-mode t)
     :config
@@ -125,3 +127,19 @@
     ;(add-hook 'web-mode-hook #'prettier-js-mode)
     (setq prettier-js-args '("--single-quote" "true"))))
           
+;; C/C++ Configuration
+(use-package ccls
+  :ensure t
+  :config
+  (use-package lsp-mode
+    :commands lsp
+    :custom
+    (lsp-eldoc-render-all t)
+    ; don't be constantly updating as I'm typing
+    (lsp-idle-delay 0.6))
+  (use-package lsp-ui
+    :commands lsp-ui-mode)
+  (use-package company-lsp
+    :commands company-lsp)
+  (add-hook 'c-mode-common-hook 'lsp)
+  (setq c-basic-offset 2))
