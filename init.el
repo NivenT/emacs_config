@@ -132,14 +132,17 @@
   :ensure t
   :config
   (use-package lsp-mode
+    :ensure t
     :commands lsp
     :custom
     (lsp-eldoc-render-all t)
     ; don't be constantly updating as I'm typing
     (lsp-idle-delay 0.6))
   (use-package lsp-ui
+    :ensure t
     :commands lsp-ui-mode)
   (use-package company-lsp
+    :ensure t
     :commands company-lsp)
   (add-hook 'c-mode-common-hook 'lsp)
   (setq c-basic-offset 2))
