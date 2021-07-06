@@ -79,7 +79,6 @@
     (lsp-rust-server 'rust-analyzer)
     (lsp-rust-analyzer-cargo-watch-command "clippy")
     (lsp-eldoc-render-all nil)
-    ; don't be constantly updating as I'm typing
     (lsp-idle-delay 0.6)
     (lsp-rust-analyzer-server-display-inlay-hints t)
     (lsp-rust-analyzer-inlay-hints-mode t)
@@ -135,14 +134,13 @@
     :ensure t
     :commands lsp
     :custom
-    (lsp-eldoc-render-all t)
-    ; don't be constantly updating as I'm typing
-    (lsp-idle-delay 0.6))
-  (use-package lsp-ui
-    :ensure t
-    :commands lsp-ui-mode)
-  (use-package company-lsp
-    :ensure t
-    :commands company-lsp)
-  (add-hook 'c-mode-common-hook 'lsp)
+    (lsp-eldoc-render-all nil)
+    (lsp-idle-delay 0.6)
+    :config
+    (use-package lsp-ui
+      :ensure t
+      :commands lsp-ui-mode)
+    (use-package company-lsp
+      :commands company-lsp)
+    (add-hook 'c-mode-common-hook 'lsp))
   (setq c-basic-offset 2))
