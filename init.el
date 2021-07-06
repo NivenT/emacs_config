@@ -34,6 +34,25 @@
 (load-theme 'monokai t)
 (add-to-list 'default-frame-alist '(background-color . "color-16"))
 
+;; lsp config (used by both Rust and C{++})
+(use-package lsp-mode
+    :ensure t
+    :custom
+    (lsp-rust-server 'rust-analyzer)
+    (lsp-rust-analyzer-cargo-watch-command "clippy")
+    (lsp-eldoc-render-all nil)
+    (lsp-signature-auto-activate nil) 
+    (lsp-signature-doc-lines 1)
+    (lsp-idle-delay 0.6)
+    (lsp-rust-analyzer-server-display-inlay-hints t)
+    (lsp-rust-analyzer-inlay-hints-mode t)
+    (lsp-ui-doc-enable nil)
+    (lsp-signature-render-documentation nil)
+    :config
+    (use-package lsp-ui
+      :ensure t)
+    (use-package company-lsp
+      :ensure t))
 
 ;; rust configuration
 (use-package rust-mode
@@ -73,17 +92,7 @@
   (use-package ron-mode
     :ensure t)
   ;; rust language server for inline type annotations
-  (use-package lsp-mode
-    :ensure t
-    :custom
-    (lsp-rust-server 'rust-analyzer)
-    (lsp-rust-analyzer-cargo-watch-command "clippy")
-    (lsp-eldoc-render-all nil)
-    (lsp-idle-delay 0.6)
-    (lsp-rust-analyzer-server-display-inlay-hints t)
-    (lsp-rust-analyzer-inlay-hints-mode t)
-    :config
-    (add-hook 'rust-mode-hook 'lsp))
+  (add-hook 'rust-mode-hook 'lsp)
   ;; format Rust buffers (using rustfmt) and run clippy on save
   (add-hook 'before-save-hook 
             (lambda ()
@@ -126,21 +135,10 @@
     ;(add-hook 'web-mode-hook #'prettier-js-mode)
     (setq prettier-js-args '("--single-quote" "true"))))
           
+
 ;; C/C++ Configuration
 (use-package ccls
   :ensure t
   :config
-  (use-package lsp-mode
-    :ensure t
-    :commands lsp
-    :custom
-    (lsp-eldoc-render-all nil)
-    (lsp-idle-delay 0.6)
-    :config
-    (use-package lsp-ui
-      :ensure t
-      :commands lsp-ui-mode)
-    (use-package company-lsp
-      :commands company-lsp)
-    (add-hook 'c-mode-common-hook 'lsp))
+  (add-hook 'c-mode-common-hook 'lsp)
   (setq c-basic-offset 2))
