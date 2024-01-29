@@ -99,6 +99,18 @@
               (when (eq major-mode 'rust-mode)
                 (rust-format-buffer)))))
 
+;; Markdown Configuration
+(use-package markdown-mode
+  :ensure t
+  :mode ("README\\.md\\'" . gmf-mode)
+  :init (setq markdown-command "multimarkdown")
+  :config
+  (setq markdown-list-indent-width 2)
+  (setq markdown-enable-math t)
+  (setq markdown-enable-html t)
+  (setq markdown-fontify-code-blocks-natively t))
+
+
 ;; Javascript Configuration
 (setq js-indent-level 2)
 (setq rjsx-indent-level 2)
@@ -136,9 +148,14 @@
     (setq prettier-js-args '("--single-quote" "true"))))
           
 
-;; C/C++ Configuration
+;; C/C++ Configuration (see e.g. https://github.com/MaskRay/ccls/wiki/lsp-mode )
 (use-package ccls
   :ensure t
   :config
   (add-hook 'c-mode-common-hook 'lsp)
-  (setq c-basic-offset 2))
+  (add-hook 'c++-mode-hook 'lsp)
+  (setq c-basic-offset 2)
+  ;; semantic highlighting
+  ;(setq ccls-sem-highlight-method 'font-lock)
+  (lsp-find-custom "$ccls/call")
+  (lsp-find-custom "$ccls/vars"))
