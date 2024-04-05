@@ -12,22 +12,31 @@
 (global-display-line-numbers-mode)
 (setq column-number-mode t)
 
+;; https://www.reddit.com/r/emacs/comments/l42oep/suppress_nativecomp_warnings_buffer/
+(setq comp-async-report-warnings-errors nil)
+(setq native-comp-async-report-warnings-errors nil)
+
+;;;; Next two sections of things make startup slower.
+;;;; Unclear if they're actually necessary?
+
 ;; require and initialize `package`
-(add-to-list 'load-path "~/.emacs.d/pkgs/")
+;(add-to-list 'load-path "~/.emacs.d/pkgs/")
 (require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives
-             '("gnu" . "https://elpa.gnu.org/packages/") t)
-(add-to-list 'package-archives
-             '("MELPA Stable" . "https://stable.melpa.org/packages/") t)
-(package-initialize)
+;(add-to-list 'package-archives
+;             '("melpa" . "https://melpa.org/packages/") t)
+;(add-to-list 'package-archives
+;             '("gnu" . "https://elpa.gnu.org/packages/") t)
+;(add-to-list 'package-archives
+;             '("MELPA Stable" . "https://stable.melpa.org/packages/") t)
+;(package-initialize)
 
 ;; make sure we have `use-package`
-(when (not (package-installed-p 'use-package))
-  (package-refresh-contents)
-  (package-install 'use-package))
+;(when (not (package-installed-p 'use-package))
+;  (package-refresh-contents)
+;  (package-install 'use-package))
 (require 'use-package)
+
+(require 'cmake-mode)
 
 ;; color theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
@@ -51,8 +60,13 @@
     :config
     (use-package lsp-ui
       :ensure t)
-    (use-package company-lsp
-      :ensure t))
+    ;;;; Seems company-lsp is no more
+    ;;(use-package company-lsp
+    ;;  :ensure t)
+    (use-package company
+      :ensure t
+      :config
+      (setq lsp-completion-provider :capf)))
 
 ;; rust configuration
 (use-package rust-mode
@@ -148,6 +162,10 @@
     (setq prettier-js-args '("--single-quote" "true"))))
           
 
+;; When using C/C++, remember to generate compile_commands.json,
+;; e.g. by adding set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE) to CMakeLists.txt
+;; you may need to symlink it to your project root (from your build folder)
+
 ;; C/C++ Configuration (see e.g. https://github.com/MaskRay/ccls/wiki/lsp-mode )
 (use-package ccls
   :ensure t
@@ -157,5 +175,7 @@
   (setq c-basic-offset 2)
   ;; semantic highlighting
   ;(setq ccls-sem-highlight-method 'font-lock)
-  (lsp-find-custom "$ccls/call")
-  (lsp-find-custom "$ccls/vars"))
+  ;; I have no idea what these next two lines did
+  ;(lsp-find-custom "$ccls/call")
+  ;(lsp-find-custom "$ccls/vars")
+  )
