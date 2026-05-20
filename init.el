@@ -20,28 +20,49 @@
 ;;;; Unclear if they're actually necessary?
 
 ;; require and initialize `package`
-;(add-to-list 'load-path "~/.emacs.d/pkgs/")
+(add-to-list 'load-path "~/.emacs.d/pkgs/")
 (require 'package)
-;(add-to-list 'package-archives
-;             '("melpa" . "https://melpa.org/packages/") t)
-;(add-to-list 'package-archives
-;             '("gnu" . "https://elpa.gnu.org/packages/") t)
-;(add-to-list 'package-archives
-;             '("MELPA Stable" . "https://stable.melpa.org/packages/") t)
-;(package-initialize)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives
+             '("gnu" . "https://elpa.gnu.org/packages/") t)
+(add-to-list 'package-archives
+             '("MELPA Stable" . "https://stable.melpa.org/packages/") t)
+(package-initialize)
 
 ;; make sure we have `use-package`
-;(when (not (package-installed-p 'use-package))
-;  (package-refresh-contents)
-;  (package-install 'use-package))
+(when (not (package-installed-p 'use-package))
+  (package-refresh-contents)
+  (package-install 'use-package))
 (require 'use-package)
 
-(require 'cmake-mode)
+(use-package 'cmake-mode
+  :ensure t)
 
 ;; color theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(load-theme 'monokai t)
-(add-to-list 'default-frame-alist '(background-color . "color-16"))
+;(load-theme 'monokai t)
+;(add-to-list 'default-frame-alist '(background-color . "color-16"))
+
+(use-package doom-themes
+  :ensure t
+  :custom
+  ;; Global settings (defaults)
+  (doom-themes-enable-bold t)   ; if nil, bold is universally disabled
+  (doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  ;; for treemacs users
+  (doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+  :config
+  (load-theme 'doom-dark+ t)
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; Enable custom neotree theme (nerd-icons must be installed!)
+  (doom-themes-neotree-config)
+  ;; or for treemacs users
+  (doom-themes-treemacs-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
 
 ;; lsp config (used by both Rust and C{++})
 (use-package lsp-mode
