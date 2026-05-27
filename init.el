@@ -36,7 +36,7 @@
   (package-install 'use-package))
 (require 'use-package)
 
-(use-package 'cmake-mode
+(use-package cmake-mode
   :ensure t)
 
 ;; color theme
@@ -103,16 +103,19 @@
               (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
   ;; racer does code completion
   ;;; M-. goes to definition, M-, goes back
- (use-package racer 
-   :ensure t
-   :hook (rust-mode . racer-mode)
-    :init
-    (use-package company :ensure t) ;; needed for racer
-    (setq racer-cmd "~/.cargo/bin/racer") ;; racer binary path
-    (setq racer-rust-src-path "~/code/rust/library")
-    :config
-    (add-hook 'racer-mode-hook #'eldoc-mode)
-    (add-hook 'racer-mode-hook #'company-mode))
+  ;;; Need to download rust code, see https://github.com/racer-rust/emacs-racer#testing-your-setup
+  ;;;
+  ;;; Update: I think racer no longer supported? lsp-mode use rust-analyzer by default
+  ;(use-package racer 
+    ;:ensure t
+    ;:hook (rust-mode . racer-mode)
+    ;:init
+    ;(use-package company :ensure t) ;; needed for racer
+    ;(setq racer-cmd "~/.cargo/bin/racer") ;; racer binary path
+    ;(setq racer-rust-src-path "~/code/rust/library")
+    ;:config
+    ;(add-hook 'racer-mode-hook #'eldoc-mode)
+    ;(add-hook 'racer-mode-hook #'company-mode))
   ;; compiles code on the fly and reports errors
   (use-package flycheck-rust 
     :ensure t
